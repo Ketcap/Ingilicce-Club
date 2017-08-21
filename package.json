@@ -1,0 +1,14 @@
+{
+  "name": "Slack-Counter",
+  "private": true,
+  "scripts": {
+    "start": "meteor run"
+  },
+  "dependencies": {
+    "babel-runtime": "^6.20.0",
+    "hammerjs": "^2.0.8",
+    "materialize-css": "^0.100.1",
+    "meteor-node-stubs": "~0.2.4",
+    "shuffle-array": "^1.0.1"
+  }
+}
