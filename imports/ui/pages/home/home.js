@@ -1,14 +1,23 @@
 import './home.html'
 import { ReactiveVar } from 'meteor/reactive-var';
-var shuffle = require('shuffle-array')
+import { Fake } from 'meteor/anti:fake';
+
+var shuffle = require('shuffle-array');
 
 Template.App_Home.onCreated(function() {
 	var self = this;
-	self.Slack = ReactiveVar();
+	self.Slack = new ReactiveVar();
+	self.Channels = new ReactiveVar();
+	self.SelectedChannel = new ReactiveVar();
 
 	Meteor.call('Slack.Members',function(err,resp){
 		if(!err){
 			self.Slack.set(resp);
+		}
+	});
+	Meteor.call('Slack.Channels',function(err,resp){
+		if(!err){
+			self.Channels.set(resp.channels)
 		}
 	})
 })
@@ -25,11 +34,50 @@ Template.App_Home.helpers({
 	members:(e)=>{
 		const filter = e.filter((user)=>{ return user.id != "USLACKBOT" })
 		return shuffle(filter)
+	},
+	channels:(e)=>{
+		return Template.instance().Channels.get();
 	}
 })
 
 Template.App_Home.events({
-	'submit form':function(event,Template){
+	'click a.selectChannel':function(event,Template){
+		event.preventDefault();
+		const channelId = this.id;
+		Template.SelectedChannel.set(channelId);
+		$('#modal2').modal('open');
+	},
+	'submit form#call':function(event,Template){
+		event.preventDefault();
+		const password = event.target.password.value;
+		Meteor.call('Verify.Password',{password},function(err,resp){
+			if(!err){
+				Materialize.toast('Initializing',2500,'green darken-2');
+
+				const channelId = Template.SelectedChannel.get();
+				Meteor.call('Slack.Channel.Random.Users',{channelId},function(err,resp){
+					if(!err){
+						const date = new Date();
+						const userList = resp;
+						Meteor.call("Slack.Create.Group",{groupName:"Call for "+Fake.color()},function(err,resp){
+							if(!err){
+								Meteor.call('Slack.Invite.Channel',{userList,channel:resp.group.id},function(err,resp){
+									if(!err){
+										Materialize.toast('Call has been created have fun :) ',2500,'green darken-2');
+									}
+								});
+							}
+						})
+					}
+				})
+
+			}else{
+				Materialize.toast(err.reason,2500,'red darken-2')
+			}
+		});
+
+	},
+	'submit form#invite':function(event,Template){
 		event.preventDefault();
 		const email = event.target.email.value;
 
