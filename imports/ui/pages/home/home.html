@@ -6,14 +6,14 @@
 
 			<div class="col s12 m12 l6" style="height:90px; line-height:90px;">
 				<p class="flow-text" style="margin:0">İngiliççe Öğreniyoruz :
-					{{memberCount slack}} kişi
+					{{memberCount slack}} member
 				</p>
 			</div>
 			<div class="col s12 m12 l6" style="height:90px; line-height:90px">
 				{{#if channels}}
 				<a class='dropdown-button btn' href='#' data-activates='dropdown1'>Random Call</a>
 				{{/if}}
-				<a href="#modal1" class="modal-trigger waves-effect waves-light btn">Davetiye iste</a>
+				<a href="#modal1" class="modal-trigger waves-effect waves-light btn">Get Invite</a>
 			</div>
 			{{#if channels}}
 			<!-- Dropdown Structure -->
@@ -72,10 +72,10 @@
 			<form id="invite" class="row">
 				<div class="input-field col s12 m8">
 					<input id="email" type="email">
-					<label for="email">Mail Adresiniz</label>
+					<label for="email">E-mail</label>
 				</div>
 				<div class="col s12 m4 right-align" style="line-height:calc(66px + 0.75em)">
-					<button class="btn waves-effect waves-light" type="submit" name="action">Davetiye Al
+					<button class="btn waves-effect waves-light" type="submit" name="action">Get It
 						<i class="material-icons right">send</i>
 					</button>
 				</div>
