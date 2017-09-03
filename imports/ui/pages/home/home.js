@@ -82,20 +82,20 @@ Template.App_Home.events({
 		const email = event.target.email.value;
 
 		if(!email){
-			Materialize.toast('Email Girmelisiniz',2500,'red darken-2')
+			Materialize.toast('Please enter E-mail',2500,'red darken-2')
 			return false;
 		};
 
 		Meteor.call('Slack.Invite',{email},function(err,resp){
 			if(resp.ok){
-				Materialize.toast('Davet Gönderilmiştir.',2500,'green darken-2')
+				Materialize.toast('Invitation has been sent.',2500,'green darken-2')
 			}else{
 				if(resp.error == 'already_invited'){
-					Materialize.toast('Bu mail davetiyesi önceden gönderilmiştir.',2500)
+					Materialize.toast('This mail has already invitation',2500)
 				}else if(resp.error == 'already_in_team'){
-					Materialize.toast('Bu mail takımın bir parçasıdır',2500)
+					Materialize.toast('This mail is already in team',2500)
 				}else if(resp.error == 'invalid_email'){
-					Materialize.toast('Geçersiz mail adresi',2500)
+					Materialize.toast('Invalid E-mail',2500)
 				}
 			}
 		})
